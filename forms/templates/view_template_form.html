@@ -1,0 +1,43 @@
+# -------------- Simple View ------------------ #
+from django.http import HttpResponse
+
+def view_simple(request):
+    return HttpResponse('''
+        <h1>Başlık</h1>
+        <b>Kalın Yazı</b>
+        <p>Paragraf yazısı</p>
+    ''')
+
+# -------------- Template View ------------------ #
+from django.shortcuts import render
+
+def view_template(request):
+    context = {
+        'title': 'Bu bir başlıktır.',
+        'desc': 'Bu bir açıklamadır.',
+        'number': 2023,
+        'var_list': ['a', 'b', 'c'],
+        'var_tupple': (0, 1, 2, 3),
+        'var_dict': {
+            'key1': 'val1',
+            'key2': {
+                'key3': 'val3'
+            }
+        }
+    } 
+    # return render(request, 'template_name.html', variables_for_templates)
+    return render(request, 'view_template.html', context)
+
+from .forms import BasicForm
+def view_template_form(request):
+    form = BasicForm()
+    context = {
+        'form': form,
+        'message': ''
+    }
+
+    if request.method == 'POST':
+        # POST işlemleri
+        context['message'] = 'POST işlemi yapıldı.'
+
+    return render(request, 'view_template_form.html', context)
